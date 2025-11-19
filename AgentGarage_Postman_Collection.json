@@ -1,0 +1,516 @@
+{
+  "info": {
+    "name": "AgentGarage - n8n Training Workflows",
+    "description": "Complete collection of training workflow endpoints for the AgentGarage LLM automation exercise.\n\nThis collection includes all 9 training workflows:\n1. User Story Creator (Original)\n2. Manager Agent (Original)\n3. Code Review Assistant\n4. Gherkin Generator\n5. Commit Message Improver\n6. PR Description Generator\n7. Test Case Generator\n8. Release Notes Generator\n9. Bug Triage Assistant\n\nSetup:\n1. Ensure AgentGarage is running: make start\n2. Import this collection into Postman\n3. Use the examples or create your own requests\n4. Check the shared/ folder for sample data\n\nBase URL: http://localhost:5678",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Training Workflows",
+      "item": [
+        {
+          "name": "1. User Story Creator",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"feature\": \"User authentication system\",\n  \"description\": \"Users need to securely log in and out of the application\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5678/webhook/user_story",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5678",
+              "path": ["webhook", "user_story"]
+            },
+            "description": "Creates structured user stories from feature descriptions.\n\n**Original workflow** - Part of the base AgentGarage setup."
+          },
+          "response": [
+            {
+              "name": "Success Example",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"feature\": \"Shopping cart\",\n  \"description\": \"Users can add items to cart\"\n}"
+                },
+                "url": {
+                  "raw": "http://localhost:5678/webhook/user_story",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "5678",
+                  "path": ["webhook", "user_story"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "body": "{\n  \"user_story\": \"As a customer, I want to add items to my cart so that I can purchase multiple items at once.\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "2. Manager Agent",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"task\": \"Analyze code quality\",\n  \"context\": \"Review authentication module for security issues\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5678/webhook/manager",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5678",
+              "path": ["webhook", "manager"]
+            },
+            "description": "Routes tasks to appropriate sub-agents.\n\n**Original workflow** - Demonstrates agent orchestration patterns."
+          },
+          "response": []
+        },
+        {
+          "name": "3. Code Review Assistant",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"def login(username, password):\\n    user = db.query(f'SELECT * FROM users WHERE name={username}')\\n    if user.password == password:\\n        return user\",\n  \"language\": \"python\",\n  \"focus\": \"security\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5678/webhook/code_review",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5678",
+              "path": ["webhook", "code_review"]
+            },
+            "description": "AI-powered code review focusing on security, quality, and best practices.\n\n**Training workflow** - Learn to build AI code analysis tools.\n\nUse example files from shared/ directory:\n- shared/example_code_python.py\n- shared/example_code_javascript.js\n- shared/example_code_java.java"
+          },
+          "response": [
+            {
+              "name": "Python Security Review",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"code\": \"def login(username, password):\\n    user = db.query(f'SELECT * FROM users WHERE name={username}')\\n    if user.password == password:\\n        return user\",\n  \"language\": \"python\",\n  \"focus\": \"security\"\n}"
+                },
+                "url": {
+                  "raw": "http://localhost:5678/webhook/code_review",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "5678",
+                  "path": ["webhook", "code_review"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "body": "{\n  \"review\": \"### Security Issues\\n- SQL Injection vulnerability\\n- Plain text password comparison\\n- No input validation\\n\\n### Recommendations\\n- Use parameterized queries\\n- Hash passwords\\n- Add input sanitization\",\n  \"language\": \"python\",\n  \"severity\": \"high\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "4. Gherkin Generator",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_story\": \"As a user, I want to reset my password so that I can regain access to my account if I forget it\",\n  \"acceptance_criteria\": \"User receives email with reset link, link expires after 24 hours, password must meet security requirements\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5678/webhook/gherkin",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5678",
+              "path": ["webhook", "gherkin"]
+            },
+            "description": "Converts user stories into BDD/Gherkin test scenarios.\n\n**Training workflow** - Learn behavior-driven development automation.\n\nUse examples from shared/example_user_stories.md"
+          },
+          "response": [
+            {
+              "name": "Password Reset Scenario",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"user_story\": \"As a user, I want to reset my password\",\n  \"acceptance_criteria\": \"Email sent, link expires in 24h\"\n}"
+                },
+                "url": {
+                  "raw": "http://localhost:5678/webhook/gherkin",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "5678",
+                  "path": ["webhook", "gherkin"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "body": "{\n  \"scenarios\": \"Feature: Password Reset\\n\\nScenario: User requests password reset\\n  Given I am on the login page\\n  When I click 'Forgot Password'\\n  And I enter my email\\n  Then I receive a reset link\\n  And the link expires after 24 hours\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "5. Commit Message Improver",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"message\": \"fixed the login bug and updated some docs\",\n  \"files\": \"src/auth/login.js, README.md\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5678/webhook/commit_improver",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5678",
+              "path": ["webhook", "commit_improver"]
+            },
+            "description": "Converts rough commit messages into Conventional Commits format.\n\n**Training workflow** - Learn Git best practices automation.\n\nConventional Commits Format:\n- feat: New feature\n- fix: Bug fix\n- docs: Documentation\n- style: Formatting\n- refactor: Code restructuring\n- test: Tests\n- chore: Maintenance"
+          },
+          "response": [
+            {
+              "name": "Improved Commit",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"message\": \"fixed the login bug\",\n  \"files\": \"src/auth/login.js\"\n}"
+                },
+                "url": {
+                  "raw": "http://localhost:5678/webhook/commit_improver",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "5678",
+                  "path": ["webhook", "commit_improver"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "body": "{\n  \"original\": \"fixed the login bug\",\n  \"improved\": \"fix(auth): resolve authentication validation error\\n\\nFixed issue where login validation was failing for users with special characters in username.\",\n  \"type\": \"fix\",\n  \"scope\": \"auth\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "6. PR Description Generator",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"commits\": \"fix: auth validation\\nfeat: add password reset\\ndocs: update API docs\",\n  \"files\": \"src/auth/login.js\\nsrc/auth/reset.js\\nREADME.md\",\n  \"branch\": \"feature/auth-improvements\",\n  \"saveToFile\": false\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5678/webhook/pr_description",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5678",
+              "path": ["webhook", "pr_description"]
+            },
+            "description": "Generates professional PR descriptions from commit messages.\n\n**Training workflow** - Learn Git workflow automation.\n\nTip: Set saveToFile=true to save description as markdown in shared/ folder."
+          },
+          "response": [
+            {
+              "name": "Generated PR Description",
+              "originalRequest": {
+                "method": "POST",
+                "header": [],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"commits\": \"fix: auth bug\\nfeat: add tests\",\n  \"branch\": \"feature/auth-fix\"\n}"
+                },
+                "url": {
+                  "raw": "http://localhost:5678/webhook/pr_description",
+                  "protocol": "http",
+                  "host": ["localhost"],
+                  "port": "5678",
+                  "path": ["webhook", "pr_description"]
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "_postman_previewlanguage": "json",
+              "header": [],
+              "body": "{\n  \"description\": \"## Summary\\nFixes authentication bug and adds comprehensive test coverage...\\n\\n## Changes\\n- Fixed login validation\\n- Added unit tests\\n- Updated documentation\",\n  \"commits\": \"fix: auth bug\\nfeat: add tests\",\n  \"branch\": \"feature/auth-fix\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "7. Test Case Generator",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"requirement\": \"User login with email and password\",\n  \"context\": \"Web application with JWT authentication\",\n  \"saveToFile\": false\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5678/webhook/test_case_generator",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5678",
+              "path": ["webhook", "test_case_generator"]
+            },
+            "description": "Generates test cases from requirements.\\n\\n**Training workflow** - QA automation."
+          },
+          "response": []
+        },
+        {
+          "name": "8. Release Notes Generator",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"version\": \"2.5.0\",\n  \"commits\": \"feat: OAuth\\nfix: rate limiting\\ndocs: API update\",\n  \"saveToFile\": false\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5678/webhook/release_notes",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5678",
+              "path": ["webhook", "release_notes"]
+            },
+            "description": "Creates release notes from commits.\\n\\n**Training workflow** - Release automation."
+          },
+          "response": []
+        },
+        {
+          "name": "9. Bug Triage Assistant",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Database timeout\",\n  \"description\": \"Connection timeouts in production\",\n  \"logs\": \"ERROR: timeout after 30s\",\n  \"updateJira\": false\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5678/webhook/bug_triage",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5678",
+              "path": ["webhook", "bug_triage"]
+            },
+            "description": "AI bug analysis and triage.\\n\\n**Training workflow** - Bug management automation."
+          },
+          "response": []
+        }
+      ],
+      "description": "All 9 training workflows for learning LLM automation with n8n and Ollama."
+    },
+    {
+      "name": "Advanced Examples",
+      "item": [
+        {
+          "name": "Code Review - From File",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"{{file_content}}\",\n  \"language\": \"python\",\n  \"focus\": \"all\"\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5678/webhook/code_review",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5678",
+              "path": ["webhook", "code_review"]
+            },
+            "description": "Use Postman pre-request script to read file:\n\n```javascript\nconst fs = require('fs');\nconst content = fs.readFileSync('/workspaces/agent-garage_copy/shared/example_code_python.py', 'utf8');\npm.variables.set('file_content', content);\n```"
+          },
+          "response": []
+        },
+        {
+          "name": "Gherkin - Batch Generation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_stories\": [\n    \"As a user, I want to login\",\n    \"As a user, I want to search products\",\n    \"As a user, I want to checkout\"\n  ]\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5678/webhook/gherkin_batch",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5678",
+              "path": ["webhook", "gherkin_batch"]
+            },
+            "description": "Example of how you could extend the Gherkin workflow to handle multiple stories.\n\n**Note:** This requires modifying the workflow to loop through stories."
+          },
+          "response": []
+        },
+        {
+          "name": "Git Integration - Auto PR",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"commits\": \"{{git_commits}}\",\n  \"files\": \"{{git_files}}\",\n  \"branch\": \"{{git_branch}}\",\n  \"saveToFile\": true\n}"
+            },
+            "url": {
+              "raw": "http://localhost:5678/webhook/pr_description",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5678",
+              "path": ["webhook", "pr_description"]
+            },
+            "description": "Use Postman pre-request script to get git data:\n\n```javascript\nconst { execSync } = require('child_process');\npm.variables.set('git_commits', execSync('git log --oneline main..HEAD').toString());\npm.variables.set('git_files', execSync('git diff --name-only main...HEAD').toString());\npm.variables.set('git_branch', execSync('git branch --show-current').toString().trim());\n```"
+          },
+          "response": []
+        }
+      ],
+      "description": "Advanced usage patterns and integrations."
+    },
+    {
+      "name": "Health Checks",
+      "item": [
+        {
+          "name": "n8n Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:5678/healthz",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "5678",
+              "path": ["healthz"]
+            },
+            "description": "Check if n8n is running and healthy."
+          },
+          "response": []
+        },
+        {
+          "name": "Ollama Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:11434/api/tags",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "11434",
+              "path": ["api", "tags"]
+            },
+            "description": "Check Ollama status and list available models."
+          },
+          "response": []
+        },
+        {
+          "name": "Test Ollama Generation",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"llama3.2:latest\",\n  \"prompt\": \"Say 'Hello from AgentGarage!' in one sentence.\",\n  \"stream\": false\n}"
+            },
+            "url": {
+              "raw": "http://localhost:11434/api/generate",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "11434",
+              "path": ["api", "generate"]
+            },
+            "description": "Direct test of Ollama API - bypasses n8n."
+          },
+          "response": []
+        }
+      ],
+      "description": "Service health checks and diagnostics."
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5678",
+      "type": "string"
+    },
+    {
+      "key": "ollama_url",
+      "value": "http://localhost:11434",
+      "type": "string"
+    }
+  ]
+}

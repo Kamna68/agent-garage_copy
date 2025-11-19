@@ -112,7 +112,7 @@
     },
     {
       "parameters": {
-        "model": "llama3.2:latest",
+        "model": "qwen2:0.5b",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
@@ -132,7 +132,7 @@
     },
     {
       "parameters": {
-        "content": "# AI-Agents\nAn AI-Agent is an autonomous system that receives data, makes rational decisions, and acts within its environment to achieve specific goals.\n\n### AI agents can be characterised by three components: ###\n\n* Memory Capacities \n* Tools \n* LLM \n\n\n* An LLM acts as the reasoning engine behind the agent and decides what actions to take and in which order. \n\n* Moreover the Agent can use external tools and APIs to perform actions and retrieve information. It can understand the capabilities of different tools and determine which tool to use depending on the task.\n\n\n## Customization of agents\n\n* AI-Agents in n8n can be easily customized using system prompts.\nA system prompt defines the agent’s role, behavior, and area of expertise—whether it's acting as a writer, analyst, advisor, or something else.\n\n* In this case, the AI-Agent has been configured specifically to generate user stories. It analyzes requirements and produces complete user stories in the classic format, including acceptance criteria.\n\n* The agent's purpose can be changed at any time: \nBy simply adjusting the system prompt, it can be reconfigured for virtually any task—such as writing marketing content or drafting support replies.",
+        "content": "# AI-Agents\nAn AI-Agent is an autonomous system that receives data, makes rational decisions, and acts within its environment to achieve specific goals.\n\n### AI agents can be characterised by three components: ###\n\n* Memory Capacities \n* Tools \n* LLM \n\n\n* An LLM acts as the reasoning engine behind the agent and decides what actions to take and in which order. \n\n* Moreover the Agent can use external tools and APIs to perform actions and retrieve information. It can understand the capabilities of different tools and determine which tool to use depending on the task.\n\n\n## Customization of agents\n\n* AI-Agents in n8n can be easily customized using system prompts.\nA system prompt defines the agent\u2019s role, behavior, and area of expertise\u2014whether it's acting as a writer, analyst, advisor, or something else.\n\n* In this case, the AI-Agent has been configured specifically to generate user stories. It analyzes requirements and produces complete user stories in the classic format, including acceptance criteria.\n\n* The agent's purpose can be changed at any time: \nBy simply adjusting the system prompt, it can be reconfigured for virtually any task\u2014such as writing marketing content or drafting support replies.",
         "height": 800,
         "width": 520,
         "color": 5
@@ -179,7 +179,7 @@
     },
     {
       "parameters": {
-        "content": "## 👆\nThe memory keeps a history of previous messages, allowing for an ongoing conversation with the AI, rather than every interaction starting fresh.\n\n\nThis short term memory stores a customizable length of chat history for the current session.",
+        "content": "## \ud83d\udc46\nThe memory keeps a history of previous messages, allowing for an ongoing conversation with the AI, rather than every interaction starting fresh.\n\n\nThis short term memory stores a customizable length of chat history for the current session.",
         "height": 340,
         "width": 170
       },
@@ -194,7 +194,7 @@
     },
     {
       "parameters": {
-        "content": "## 👆\nThe Ollama Chat Model node allows to use Large Language Models (LLMs) with conversational agents.\n\nThe LLM llama3.2 is used here.\n",
+        "content": "## \ud83d\udc46\nThe Ollama Chat Model node allows to use Large Language Models (LLMs) with conversational agents.\n\nThe LLM llama3.2 is used here.\n",
         "height": 340,
         "width": 170
       },
@@ -209,7 +209,7 @@
     },
     {
       "parameters": {
-        "content": "\n\n\n\n\n\n\n\n\n\n\n\n## 👆\nThis section shows the specialized AI-Agents that are called and orchestrated by the Manager-Agent.\n\nA total of four AI-Agents are currently in use. Each of them takes on selected tasks from the software development process.\n\nThe selection shown represents an exemplary section of the development process and does not claim to be exhaustive.\n\nFurther information on the respective AI-Agents is documented in the associated workflows.",
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n## \ud83d\udc46\nThis section shows the specialized AI-Agents that are called and orchestrated by the Manager-Agent.\n\nA total of four AI-Agents are currently in use. Each of them takes on selected tasks from the software development process.\n\nThe selection shown represents an exemplary section of the development process and does not claim to be exhaustive.\n\nFurther information on the respective AI-Agents is documented in the associated workflows.",
         "height": 500,
         "width": 630
       },

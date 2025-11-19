@@ -1,0 +1,320 @@
+{
+  "name": "3 Code Review Assistant",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "code_review_assistant",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        860,
+        160
+      ],
+      "id": "cr-webhook-001",
+      "name": "Webhook - Receive Code",
+      "webhookId": "code-review-webhook-001"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://ollama:11434/api/generate",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "llama3.2:latest"
+            },
+            {
+              "name": "prompt",
+              "value": "=You are an experienced senior software engineer conducting a thorough code review.\n\nAnalyze the following code and provide:\n1. **Overall Assessment** (Good/Needs Improvement/Poor)\n2. **Strengths** - what's done well\n3. **Issues** - bugs, security concerns, or problems\n4. **Code Quality** - readability, maintainability, style\n5. **Suggestions** - specific improvements with examples\n6. **Priority** - High/Medium/Low for each issue\n\nCode to review:\n```\n{{ $('Webhook - Receive Code').item.json.body.code }}\n```\n\nLanguage: {{ $('Webhook - Receive Code').item.json.body.language || 'Not specified' }}\n\nProvide a structured, professional code review."
+            },
+            {
+              "name": "stream",
+              "value": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1180,
+        160
+      ],
+      "id": "cr-http-001",
+      "name": "Call Ollama API"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "format-response-001",
+              "name": "review",
+              "value": "={{ $json.response }}",
+              "type": "string"
+            },
+            {
+              "id": "format-code-001",
+              "name": "original_code",
+              "value": "={{ $('Webhook - Receive Code').item.json.body.code }}",
+              "type": "string"
+            },
+            {
+              "id": "format-lang-001",
+              "name": "language",
+              "value": "={{ $('Webhook - Receive Code').item.json.body.language || 'unknown' }}",
+              "type": "string"
+            },
+            {
+              "id": "format-timestamp-001",
+              "name": "timestamp",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1460,
+        160
+      ],
+      "id": "cr-set-001",
+      "name": "Format Response"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.2,
+      "position": [
+        1720,
+        160
+      ],
+      "id": "cr-respond-001",
+      "name": "Send Review Back"
+    },
+    {
+      "parameters": {
+        "content": "## \ud83d\udc46 Webhook Trigger\nReceives code snippets via POST request.\n\nExpected JSON body:\n```json\n{\n  \"code\": \"your code here\",\n  \"language\": \"python\"\n}\n```",
+        "height": 320,
+        "width": 200
+      },
+      "id": "cr-note-001",
+      "name": "Sticky Note - Webhook",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        820,
+        340
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## \ud83d\udc46 LLM API Call\nSends code to Ollama with a detailed system prompt for code review analysis.",
+        "height": 320,
+        "width": 200
+      },
+      "id": "cr-note-002",
+      "name": "Sticky Note - API",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1140,
+        340
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## \ud83d\udc46 Format Output\nStructures the review response with metadata.",
+        "height": 320,
+        "width": 200
+      },
+      "id": "cr-note-003",
+      "name": "Sticky Note - Format",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1420,
+        340
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## \ud83d\udc46 Return Review\nSends the formatted code review back to the caller.",
+        "height": 320,
+        "width": 200
+      },
+      "id": "cr-note-004",
+      "name": "Sticky Note - Response",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1680,
+        340
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "# Code Review Assistant\n\n## Purpose\nAutomatically reviews code snippets using AI and provides structured feedback on:\n- Code quality\n- Potential bugs\n- Security concerns\n- Best practices\n- Improvement suggestions\n\n## How to Use\n\n### Via curl:\n```bash\ncurl -X POST http://localhost:5678/webhook/code_review_assistant \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"code\": \"def calc(a,b):\\n  return a+b\",\n    \"language\": \"python\"\n  }'\n```\n\n### Via Postman:\n- Method: POST\n- URL: http://localhost:5678/webhook/code_review_assistant\n- Body (raw JSON):\n```json\n{\n  \"code\": \"your code here\",\n  \"language\": \"python\"\n}\n```\n\n## Response Format\n```json\n{\n  \"review\": \"AI-generated review...\",\n  \"original_code\": \"...\",\n  \"language\": \"python\",\n  \"timestamp\": \"2025-11-19T...\"\n}\n```",
+        "height": 760,
+        "width": 500
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        140,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "cr-note-main",
+      "name": "Sticky Note - Main Info"
+    },
+    {
+      "parameters": {
+        "content": "## Training Exercise Workflow\n\nThis workflow demonstrates:\n\u2705 Direct Ollama API integration\n\u2705 Prompt engineering for code review\n\u2705 Webhook trigger pattern\n\u2705 Response formatting\n\u2705 Real SDLC use case\n\n**Try modifying:**\n- The system prompt\n- Response structure\n- Add file output\n- Add email notification",
+        "height": 400,
+        "width": 460,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1980,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "cr-note-exercise",
+      "name": "Sticky Note - Exercise"
+    },
+    {
+      "parameters": {
+        "content": "",
+        "height": 900,
+        "width": 2360,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        60,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "cr-note-background",
+      "name": "Sticky Note - Background"
+    },
+    {
+      "parameters": {
+        "content": "## 1. Receive Code",
+        "height": 160,
+        "width": 260,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        800,
+        40
+      ],
+      "typeVersion": 1,
+      "id": "cr-section-1",
+      "name": "Section Header 1"
+    },
+    {
+      "parameters": {
+        "content": "## 2. AI Analysis",
+        "height": 160,
+        "width": 260,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1120,
+        40
+      ],
+      "typeVersion": 1,
+      "id": "cr-section-2",
+      "name": "Section Header 2"
+    },
+    {
+      "parameters": {
+        "content": "## 3. Format & Return",
+        "height": 160,
+        "width": 560,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1400,
+        40
+      ],
+      "typeVersion": 1,
+      "id": "cr-section-3",
+      "name": "Section Header 3"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook - Receive Code": {
+      "main": [
+        [
+          {
+            "node": "Call Ollama API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call Ollama API": {
+      "main": [
+        [
+          {
+            "node": "Format Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format Response": {
+      "main": [
+        [
+          {
+            "node": "Send Review Back",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "training-code-review-v1",
+  "meta": {
+    "instanceId": "training-exercise-instance"
+  },
+  "id": "TrainingCodeReview001",
+  "tags": [
+    {
+      "id": "training",
+      "name": "training"
+    },
+    {
+      "id": "sdlc",
+      "name": "sdlc"
+    }
+  ]
+}

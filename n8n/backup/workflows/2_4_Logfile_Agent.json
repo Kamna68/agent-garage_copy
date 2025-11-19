@@ -48,7 +48,7 @@
     },
     {
       "parameters": {
-        "model": "llama3.2:latest",
+        "model": "qwen2:0.5b",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
@@ -115,7 +115,7 @@
     },
     {
       "parameters": {
-        "content": "# Logfile-Agent\n\nThe **Logfile-Agent** is a specialized agent within the multi-agent system. It is triggered via the **“Execute Sub-workflow Trigger”** in **n8n**, typically as part of a workflow that is controlled by the **Manager-Agent**.\n\nIts core responsibility is to **analyze logfiles** in a continuous and structured way. The agent has **permanent access to a designated logfile** and monitors it for:\n\n- Critical errors and exceptions  \n- Traces and stack information  \n- Structural changes or anomalies  \n- Relevant system messages or performance warnings\n\n* Using a prompt-driven analysis approach, the Logfile-Agent interprets and evaluates log data to identify patterns, detect regressions, and extract actionable insights.\n\n* Whenever significant findings are detected, the agent generates corresponding messages or reports and returns them automatically to the **Manager-Agent** for further coordination or escalation.\n",
+        "content": "# Logfile-Agent\n\nThe **Logfile-Agent** is a specialized agent within the multi-agent system. It is triggered via the **\u201cExecute Sub-workflow Trigger\u201d** in **n8n**, typically as part of a workflow that is controlled by the **Manager-Agent**.\n\nIts core responsibility is to **analyze logfiles** in a continuous and structured way. The agent has **permanent access to a designated logfile** and monitors it for:\n\n- Critical errors and exceptions  \n- Traces and stack information  \n- Structural changes or anomalies  \n- Relevant system messages or performance warnings\n\n* Using a prompt-driven analysis approach, the Logfile-Agent interprets and evaluates log data to identify patterns, detect regressions, and extract actionable insights.\n\n* Whenever significant findings are detected, the agent generates corresponding messages or reports and returns them automatically to the **Manager-Agent** for further coordination or escalation.\n",
         "height": 500,
         "width": 660
       },
@@ -130,7 +130,7 @@
     },
     {
       "parameters": {
-        "content": "## 👆\nThe memory keeps a history of previous messages, allowing for an ongoing conversation with the AI, rather than every interaction starting fresh.\n\n\nThis short term memory stores a customizable length of chat history for the current session.",
+        "content": "## \ud83d\udc46\nThe memory keeps a history of previous messages, allowing for an ongoing conversation with the AI, rather than every interaction starting fresh.\n\n\nThis short term memory stores a customizable length of chat history for the current session.",
         "height": 340,
         "width": 170
       },
@@ -145,7 +145,7 @@
     },
     {
       "parameters": {
-        "content": "## 👆\nThe Ollama Chat Model node allows to use Large Language Models (LLMs) with conversational agents.\n\nThe LLM llama3.2 is used here.\n",
+        "content": "## \ud83d\udc46\nThe Ollama Chat Model node allows to use Large Language Models (LLMs) with conversational agents.\n\nThe LLM llama3.2 is used here.\n",
         "height": 340,
         "width": 170
       },
@@ -208,7 +208,7 @@
     },
     {
       "parameters": {
-        "content": "## 👈\n**Click on the AI-Agent-Node** in the workflow to view the **system prompt used by the Logfile-Agent**.",
+        "content": "## \ud83d\udc48\n**Click on the AI-Agent-Node** in the workflow to view the **system prompt used by the Logfile-Agent**.",
         "height": 140,
         "width": 310
       },

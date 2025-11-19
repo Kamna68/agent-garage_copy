@@ -20,7 +20,7 @@
     },
     {
       "parameters": {
-        "model": "llama3.2:latest",
+        "model": "qwen2:0.5b",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
@@ -67,7 +67,7 @@
     },
     {
       "parameters": {
-        "content": "## 👆\nThe memory keeps a history of previous messages, allowing for an ongoing conversation with the AI, rather than every interaction starting fresh.\n\n\nThis short term memory stores a customizable length of chat history for the current session.",
+        "content": "## \ud83d\udc46\nThe memory keeps a history of previous messages, allowing for an ongoing conversation with the AI, rather than every interaction starting fresh.\n\n\nThis short term memory stores a customizable length of chat history for the current session.",
         "height": 340,
         "width": 170
       },
@@ -82,7 +82,7 @@
     },
     {
       "parameters": {
-        "content": "## 👆\nThe Ollama Chat Model node allows to use Large Language Models (LLMs) with conversational agents.\n\nThe LLM llama3.2 is used here.\n",
+        "content": "## \ud83d\udc46\nThe Ollama Chat Model node allows to use Large Language Models (LLMs) with conversational agents.\n\nThe LLM llama3.2 is used here.\n",
         "height": 340,
         "width": 170
       },
@@ -97,7 +97,7 @@
     },
     {
       "parameters": {
-        "content": "## 👆\n The Webhook node is used to create webhooks, which can receive data from apps and services when an event occurs. It's a trigger node, which means it can start an n8n workflow. In this case it allows Open WebUI  to connect to n8n and run a workflow. \n\nTherefore, the workflow is started as soon as a chat message is sent from Open Webui.",
+        "content": "## \ud83d\udc46\n The Webhook node is used to create webhooks, which can receive data from apps and services when an event occurs. It's a trigger node, which means it can start an n8n workflow. In this case it allows Open WebUI  to connect to n8n and run a workflow. \n\nTherefore, the workflow is started as soon as a chat message is sent from Open Webui.",
         "height": 540,
         "width": 170
       },
@@ -112,7 +112,7 @@
     },
     {
       "parameters": {
-        "content": "## 👆\nUse the Respond to Webhook node to control the response to incoming webhooks. This node works with the Webhook node.\n\nIn this case, the generated response from the AI-Agent is sent to Open WebUI via this node.",
+        "content": "## \ud83d\udc46\nUse the Respond to Webhook node to control the response to incoming webhooks. This node works with the Webhook node.\n\nIn this case, the generated response from the AI-Agent is sent to Open WebUI via this node.",
         "height": 540,
         "width": 170
       },
@@ -127,7 +127,7 @@
     },
     {
       "parameters": {
-        "content": "# AI-Agents\nAn AI-Agent is an autonomous system that receives data, makes rational decisions, and acts within its environment to achieve specific goals.\n\n### AI agents can be characterised by three components: ###\n\n* Memory Capacities \n* Tools \n* LLM \n\n\n* An LLM acts as the reasoning engine behind the agent and decides what actions to take and in which order. \n\n* Moreover the Agent can use external tools and APIs to perform actions and retrieve information. It can understand the capabilities of different tools and determine which tool to use depending on the task.\n\n\n## Customization of agents\n\n* AI-Agents in n8n can be easily customized using system prompts.\nA system prompt defines the agent’s role, behavior, and area of expertise—whether it's acting as a writer, analyst, advisor, or something else.\n\n* In this case, the AI-Agent has been configured specifically to generate user stories. It analyzes requirements and produces complete user stories in the classic format, including acceptance criteria.\n\n* The agent's purpose can be changed at any time: \nBy simply adjusting the system prompt, it can be reconfigured for virtually any task—such as writing marketing content or drafting support replies.",
+        "content": "# AI-Agents\nAn AI-Agent is an autonomous system that receives data, makes rational decisions, and acts within its environment to achieve specific goals.\n\n### AI agents can be characterised by three components: ###\n\n* Memory Capacities \n* Tools \n* LLM \n\n\n* An LLM acts as the reasoning engine behind the agent and decides what actions to take and in which order. \n\n* Moreover the Agent can use external tools and APIs to perform actions and retrieve information. It can understand the capabilities of different tools and determine which tool to use depending on the task.\n\n\n## Customization of agents\n\n* AI-Agents in n8n can be easily customized using system prompts.\nA system prompt defines the agent\u2019s role, behavior, and area of expertise\u2014whether it's acting as a writer, analyst, advisor, or something else.\n\n* In this case, the AI-Agent has been configured specifically to generate user stories. It analyzes requirements and produces complete user stories in the classic format, including acceptance criteria.\n\n* The agent's purpose can be changed at any time: \nBy simply adjusting the system prompt, it can be reconfigured for virtually any task\u2014such as writing marketing content or drafting support replies.",
         "height": 760,
         "width": 520
       },
@@ -206,7 +206,7 @@
     },
     {
       "parameters": {
-        "content": "# Description of the workflow\n\nThe workflow enables users to enter a request via chat in Open WebUI, from which a complete user story is automatically generated. A specialised AI-Agent in n8n takes over the analysis and formulation - the result is displayed directly in the chat.\n\n\n### 1. Receipt of the user request:\n* A user sends a chat message via Open WebUI with the intention of having a user story created. This request automatically starts the n8n workflow.\n* The message is transmitted to n8n - it contains, for example, an idea, requirement or description from which a user story is to be generated.\n\n\n### 2. Processing by AI agent:\n* The message is forwarded to a specially configured AI Agent Node.\n* This agent is designed to create a complete user story from the perspective of a business analyst.\n* The AI-Agent analyses the input and formulates a structured user story in the classic format (‘As a [role], I would like [...] to [...]’).\n\n### 3. Generation of the user story:\n* The generated story is sent back to OpenWebUI and displayed to the user directly in the chat window as a response",
+        "content": "# Description of the workflow\n\nThe workflow enables users to enter a request via chat in Open WebUI, from which a complete user story is automatically generated. A specialised AI-Agent in n8n takes over the analysis and formulation - the result is displayed directly in the chat.\n\n\n### 1. Receipt of the user request:\n* A user sends a chat message via Open WebUI with the intention of having a user story created. This request automatically starts the n8n workflow.\n* The message is transmitted to n8n - it contains, for example, an idea, requirement or description from which a user story is to be generated.\n\n\n### 2. Processing by AI agent:\n* The message is forwarded to a specially configured AI Agent Node.\n* This agent is designed to create a complete user story from the perspective of a business analyst.\n* The AI-Agent analyses the input and formulates a structured user story in the classic format (\u2018As a [role], I would like [...] to [...]\u2019).\n\n### 3. Generation of the user story:\n* The generated story is sent back to OpenWebUI and displayed to the user directly in the chat window as a response",
         "height": 760,
         "width": 520
       },
@@ -222,9 +222,9 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "={{ $('Webhook').item.json.body.chatInput }}",
+        "text": "={{ $('Webhook').item.json.body.message || $('Webhook').item.json.body.chatInput }}",
         "options": {
-          "systemMessage": "=You take on the role of the Business Analyst in our agile development team. Your primary responsibility is to craft well-structured, clear, and verifiable user stories for upcoming product increments.\nInstructions:\nFormat\nAlways use the standard template:\nAs a <role> I want <feature/function> so that <benefit>\nQuality Criteria (INVEST)\nIndependent (each story stands alone)\nNegotiable (open to discussion)\nValuable (delivers clear value)\nEstimable (can be sized)\nSmall (fits within a single sprint)\nTestable (has clear acceptance criteria)\nAcceptance Criteria\nProvide 3–5 precise criteria per story, phrased as:\nGiven…, When…, Then…\nAdditional Notes\nDefine any domain-specific terms so developers and testers fully understand them.\nBreak down large themes (epics) into smaller, sprint-sized stories.\nExamples:\nExample 1\nUser Story\nAs a registered user I want to log in with my email and password so that I can access my personal dashboard.\nAcceptance Criteria\nGiven a registered user is on the login page; When they enter a valid email and password; Then they are redirected to their dashboard.\nGiven a user enters an incorrect password; When they click “Log In”; Then they see the error message “Invalid credentials.”\nGiven a user has forgotten their password; When they click “Forgot Password”; Then they receive an email with a password-reset link.\nExample 2\nUser Story\nAs a product manager I want to generate a monthly user-engagement report so that I can spot trends early and take action.\nAcceptance Criteria\nGiven the product manager is in the reporting module; When they select “Last Month” and click “Generate Report”; Then a PDF with KPIs (DAU, MAU, session duration) is produced.\nGiven the report is ready; When the product manager clicks “Download”; Then the PDF downloads locally.\nGiven there is no data for the selected period; When the report is generated; Then the message “No data for the selected period” appears."
+          "systemMessage": "=You take on the role of the Business Analyst in our agile development team. Your primary responsibility is to craft well-structured, clear, and verifiable user stories for upcoming product increments.\nInstructions:\nFormat\nAlways use the standard template:\nAs a <role> I want <feature/function> so that <benefit>\nQuality Criteria (INVEST)\nIndependent (each story stands alone)\nNegotiable (open to discussion)\nValuable (delivers clear value)\nEstimable (can be sized)\nSmall (fits within a single sprint)\nTestable (has clear acceptance criteria)\nAcceptance Criteria\nProvide 3\u20135 precise criteria per story, phrased as:\nGiven\u2026, When\u2026, Then\u2026\nAdditional Notes\nDefine any domain-specific terms so developers and testers fully understand them.\nBreak down large themes (epics) into smaller, sprint-sized stories.\nExamples:\nExample 1\nUser Story\nAs a registered user I want to log in with my email and password so that I can access my personal dashboard.\nAcceptance Criteria\nGiven a registered user is on the login page; When they enter a valid email and password; Then they are redirected to their dashboard.\nGiven a user enters an incorrect password; When they click \u201cLog In\u201d; Then they see the error message \u201cInvalid credentials.\u201d\nGiven a user has forgotten their password; When they click \u201cForgot Password\u201d; Then they receive an email with a password-reset link.\nExample 2\nUser Story\nAs a product manager I want to generate a monthly user-engagement report so that I can spot trends early and take action.\nAcceptance Criteria\nGiven the product manager is in the reporting module; When they select \u201cLast Month\u201d and click \u201cGenerate Report\u201d; Then a PDF with KPIs (DAU, MAU, session duration) is produced.\nGiven the report is ready; When the product manager clicks \u201cDownload\u201d; Then the PDF downloads locally.\nGiven there is no data for the selected period; When the report is generated; Then the message \u201cNo data for the selected period\u201d appears."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",

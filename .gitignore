@@ -13,3 +13,12 @@ Thumbs.db
 
 # OpenWebUI model cache
 openwebui/cache/
+
+# Generated workflow outputs
+shared/*.feature
+shared/gherkin_*.feature
+shared/output_*.txt
+shared/review_*.json
+
+# Test outputs
+test-output/

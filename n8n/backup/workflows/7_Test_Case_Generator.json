@@ -1,0 +1,260 @@
+{
+  "name": "7 Test Case Generator",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "test_case_generator",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        860,
+        160
+      ],
+      "id": "tc-webhook-001",
+      "name": "Webhook - Requirements Input",
+      "webhookId": "test-case-webhook"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://ollama:11434/api/generate",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "llama3.2:latest"
+            },
+            {
+              "name": "prompt",
+              "value": "=You are a senior QA engineer specializing in test case design.\n\nGenerate comprehensive test cases for this requirement:\n\n**Requirement:**\n{{ $('Webhook - Requirements Input').item.json.body.requirement }}\n\n**Context:**\n{{ $('Webhook - Requirements Input').item.json.body.context || 'General software testing' }}\n\n**Instructions:**\n1. Generate UNIT TEST CASES (test individual functions/methods)\n2. Generate INTEGRATION TEST CASES (test component interactions)\n3. Include positive and negative scenarios\n4. Consider edge cases and boundary conditions\n5. Follow Given-When-Then format where appropriate\n\n**Output Format:**\n```markdown\n## Unit Test Cases\n\n### TC-U001: [Test Case Title]\n**Description:** [What this test validates]\n**Given:** [Preconditions]\n**When:** [Action performed]\n**Then:** [Expected result]\n**Priority:** [High/Medium/Low]\n**Type:** [Positive/Negative/Edge Case]\n\n### TC-U002: [Next test case]\n...\n\n## Integration Test Cases\n\n### TC-I001: [Test Case Title]\n**Description:** [What this test validates]\n**Given:** [Preconditions]\n**When:** [Action performed]\n**Then:** [Expected result]\n**Priority:** [High/Medium/Low]\n**Dependencies:** [Related components]\n\n### TC-I002: [Next test case]\n...\n\n## Test Data Requirements\n- [Required test data]\n\n## Test Environment Setup\n- [Required environment configuration]\n```\n\nGenerate at least 5 unit tests and 3 integration tests."
+            },
+            {
+              "name": "stream",
+              "value": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1180,
+        160
+      ],
+      "id": "tc-http-001",
+      "name": "Generate Test Cases"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "tc-assign-001",
+              "name": "test_cases",
+              "value": "={{ $json.response }}",
+              "type": "string"
+            },
+            {
+              "id": "tc-assign-002",
+              "name": "requirement",
+              "value": "={{ $('Webhook - Requirements Input').item.json.body.requirement }}",
+              "type": "string"
+            },
+            {
+              "id": "tc-assign-003",
+              "name": "generated_at",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "tc-assign-004",
+              "name": "test_type",
+              "value": "unit_and_integration",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1460,
+        160
+      ],
+      "id": "tc-set-001",
+      "name": "Structure Output"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.2,
+      "position": [
+        1720,
+        160
+      ],
+      "id": "tc-respond-001",
+      "name": "Return Test Cases"
+    },
+    {
+      "parameters": {
+        "content": "## \ud83d\udc46 Webhook Input\nReceives requirement document.\n\nJSON format:\n```json\n{\n  \"requirement\": \"User login feature\",\n  \"context\": \"Web application\",\n  \"project\": \"MyApp\",\n  \"saveToFile\": false\n}\n```",
+        "height": 340,
+        "width": 200
+      },
+      "id": "tc-note-001",
+      "name": "Sticky Note - Input",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        820,
+        340
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## \ud83d\udc46 AI Generation\nGenerates unit and integration test cases from requirements.",
+        "height": 340,
+        "width": 200
+      },
+      "id": "tc-note-002",
+      "name": "Sticky Note - Generate",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1140,
+        340
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## \ud83d\udc46 Optional Save\nSaves test cases as markdown file if requested.",
+        "height": 340,
+        "width": 200
+      },
+      "id": "tc-note-003",
+      "name": "Sticky Note - File",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1420,
+        580
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## \ud83d\udc46 Return JSON\nSends test cases back to caller.",
+        "height": 340,
+        "width": 200
+      },
+      "id": "tc-note-004",
+      "name": "Sticky Note - Return",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1680,
+        340
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "# Test Case Generator\n\n## Purpose\nAutomatically generates comprehensive test cases from software requirements.\n\n## How to Use\n\n### Simple:\n```bash\ncurl -X POST http://localhost:5678/webhook/test_case_generator \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"requirement\": \"User login with email and password\"\n  }'\n```\n\n### With Context:\n```bash\ncurl -X POST http://localhost:5678/webhook/test_case_generator \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"requirement\": \"Shopping cart checkout process\",\n    \"context\": \"E-commerce web app with payment gateway\"\n  }'\n```\n\n### Save to File:\n```bash\ncurl -X POST http://localhost:5678/webhook/test_case_generator \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"requirement\": \"Password reset flow\",\n    \"project\": \"UserAuth\",\n    \"saveToFile\": true\n  }'\n```\n\n## Output\nGenerates:\n- Unit test cases (5+)\n- Integration test cases (3+)\n- Positive/negative scenarios\n- Edge cases\n- Test data requirements",
+        "height": 760,
+        "width": 500
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        140,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "tc-note-main",
+      "name": "Sticky Note - Documentation"
+    },
+    {
+      "parameters": {
+        "content": "## Training Workflow\n\n**What you learn:**\n\u2705 QA automation\n\u2705 Test case design\n\u2705 Given-When-Then format\n\u2705 Unit vs Integration testing\n\n**Try adding:**\n- Jira integration\n- TestRail export\n- Coverage analysis\n- Test priority sorting",
+        "height": 440,
+        "width": 460,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1980,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "tc-note-exercise",
+      "name": "Sticky Note - Learning"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook - Requirements Input": {
+      "main": [
+        [
+          {
+            "node": "Generate Test Cases",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Test Cases": {
+      "main": [
+        [
+          {
+            "node": "Structure Output",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structure Output": {
+      "main": [
+        [
+          {
+            "node": "Return Test Cases",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "training-testcase-v1",
+  "meta": {
+    "instanceId": "training-exercise-instance"
+  },
+  "id": "TrainingTestCase001",
+  "tags": [
+    {
+      "id": "training",
+      "name": "training"
+    },
+    {
+      "id": "testing",
+      "name": "testing"
+    },
+    {
+      "id": "qa",
+      "name": "qa"
+    }
+  ]
+}

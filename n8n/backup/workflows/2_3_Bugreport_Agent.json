@@ -16,7 +16,7 @@
     },
     {
       "parameters": {
-        "model": "llama3.2:latest",
+        "model": "qwen2:0.5b",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
@@ -50,7 +50,7 @@
     },
     {
       "parameters": {
-        "content": "## 👆\nThe memory keeps a history of previous messages, allowing for an ongoing conversation with the AI, rather than every interaction starting fresh.\n\n\nThis short term memory stores a customizable length of chat history for the current session.",
+        "content": "## \ud83d\udc46\nThe memory keeps a history of previous messages, allowing for an ongoing conversation with the AI, rather than every interaction starting fresh.\n\n\nThis short term memory stores a customizable length of chat history for the current session.",
         "height": 420,
         "width": 170
       },
@@ -65,7 +65,7 @@
     },
     {
       "parameters": {
-        "content": "## 👆\nThe Ollama Chat Model node allows to use Large Language Models (LLMs) with conversational agents.\n\nThe LLM llama3.2 is used here.\n",
+        "content": "## \ud83d\udc46\nThe Ollama Chat Model node allows to use Large Language Models (LLMs) with conversational agents.\n\nThe LLM llama3.2 is used here.\n",
         "height": 420,
         "width": 170
       },
@@ -112,7 +112,7 @@
     },
     {
       "parameters": {
-        "content": "## 👈\n**Click on the AI-Agent-Node** in the workflow to view the **system prompt used by the Bugreport-Agent**.",
+        "content": "## \ud83d\udc48\n**Click on the AI-Agent-Node** in the workflow to view the **system prompt used by the Bugreport-Agent**.",
         "height": 140,
         "width": 310
       },
@@ -127,7 +127,7 @@
     },
     {
       "parameters": {
-        "content": "# Bugreport-Agent\n\nThe **Bugreport-Agent** is a specialized agent within the multi-agent system. It is triggered via the **“Execute Sub-workflow Trigger”** in **n8n**, typically as part of a workflow that is controlled by the **Manager-Agent**.\n\nIts task is to generate **detailed bug reports** based on analyzed **stack traces, exceptions**, and **critical logfile findings**. \n\nEach bugreport follows a structured format, which includes:\n\n- A clear title and unique Bug ID  \n- Description of the issue and its impact  \n- Reproduction steps  \n- Expected vs. actual behavior  \n- Environment information\n\n* The Bug-Report-Agent returns its results to the **Manager-Agent**.",
+        "content": "# Bugreport-Agent\n\nThe **Bugreport-Agent** is a specialized agent within the multi-agent system. It is triggered via the **\u201cExecute Sub-workflow Trigger\u201d** in **n8n**, typically as part of a workflow that is controlled by the **Manager-Agent**.\n\nIts task is to generate **detailed bug reports** based on analyzed **stack traces, exceptions**, and **critical logfile findings**. \n\nEach bugreport follows a structured format, which includes:\n\n- A clear title and unique Bug ID  \n- Description of the issue and its impact  \n- Reproduction steps  \n- Expected vs. actual behavior  \n- Environment information\n\n* The Bug-Report-Agent returns its results to the **Manager-Agent**.",
         "height": 540,
         "width": 380
       },

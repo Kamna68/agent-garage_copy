@@ -10,6 +10,7 @@ This project builds upon the foundation of the **Self-hosted AI Starter Kit**, c
 
 ## Table of Contents
 
+- [Training Exercise](#-training-exercise)
 - [Key Features](#key-features)
 - [Tech Stack](#tech-stack)
 - [Installation](#installation)
@@ -40,6 +41,40 @@ Use of this project does not imply any affiliation with or endorsement by Accent
 
 > [!NOTE]
 > **Enterprise Version Available:** While this is a showcase lab environment, an enterprise implementation version has been successfully deployed with one of our clients and has been in production for years. This demonstrates that the concepts behind this solution are enterprise-ready.
+
+## 🎓 Training Exercise
+
+**New!** This repository now includes a comprehensive training exercise for learning LLM workflow automation.
+
+Perfect for:
+- Developers new to AI workflow automation
+- Teams exploring GenAI integration in SDLC
+- Technical workshops and training sessions
+- Self-paced learning
+
+**Quick Start:**
+1. Read [`TRAINING.md`](TRAINING.md) for an overview
+2. Follow [`SETUP.md`](SETUP.md) to start the environment
+3. Complete the exercise in [`QUICKSTART.md`](QUICKSTART.md)
+4. Review [`SOLUTION.md`](SOLUTION.md) for deep technical insights
+
+**What's Included:**
+- 4 complete training workflows (Code Review, Gherkin, Commit Messages, PR Descriptions)
+- Step-by-step tutorials with comprehensive documentation
+- Test data and examples (Python, JavaScript, Java code samples)
+- Automation tools (Makefile with 40+ commands)
+- Quick reference guide (CHEATSHEET.md)
+- Postman collection for API testing
+- Architecture diagrams and visual documentation
+- Estimated time: 2-4 hours core exercise
+
+**Bonus Materials:**
+- `.env.example` - Configuration template for easy setup
+- `Makefile` - Task automation (`make start`, `make test`, `make help`)
+- `CHEATSHEET.md` - Quick reference for commands, APIs, troubleshooting
+- `AgentGarage_Postman_Collection.json` - Complete API testing suite
+
+See [`BONUS_FEATURES.md`](BONUS_FEATURES.md) for detailed information about all enhancements.
 
 ## Key Features
 
@@ -372,6 +407,74 @@ Click on Settings at the top right of your profile, select Issues from the menu 
    JIRA_PROJECT=project_key
 
 ## 🔗 OpenWebUI and n8n Integration Architecture
+
+### System Architecture Diagram
+
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                         Docker Network                              │
+│                                                                     │
+│  ┌──────────────┐         ┌──────────────┐      ┌──────────────┐  │
+│  │              │         │              │      │              │  │
+│  │  Open WebUI  │◄───────►│     n8n      │◄────►│   Ollama     │  │
+│  │  :3000       │  HTTP   │  :5678       │ API  │   :11434     │  │
+│  │              │         │              │      │              │  │
+│  └──────┬───────┘         └──────┬───────┘      └──────┬───────┘  │
+│         │                        │                     │          │
+│         │                        │                     │          │
+│         │                        │                     │          │
+│         │                        ▼                     ▼          │
+│         │              ┌──────────────┐      ┌──────────────┐    │
+│         │              │              │      │              │    │
+│         │              │  PostgreSQL  │      │  Llama 3.2   │    │
+│         │              │    :5432     │      │    Model     │    │
+│         │              │              │      │              │    │
+│         │              └──────────────┘      └──────────────┘    │
+│         │                                                        │
+│         │              ┌──────────────┐      ┌──────────────┐    │
+│         │              │              │      │              │    │
+│         └─────────────►│    Qdrant    │      │     Jira     │    │
+│           Vector DB    │    :6333     │      │   :8080      │    │
+│                        │              │      │  (Optional)  │    │
+│                        └──────────────┘      └──────────────┘    │
+│                                                                   │
+└───────────────────────────────────────────────────────────────────┘
+         ▲                                              ▲
+         │                                              │
+    User Browser                               External Systems
+  (localhost:3000)                            (Jira, Slack, etc.)
+```
+
+### Data Flow
+
+```
+1. User Request Flow
+━━━━━━━━━━━━━━━━━
+   User → OpenWebUI → n8n-pipe Function → n8n Webhook → AI Agent
+
+2. LLM Processing Flow
+━━━━━━━━━━━━━━━━━━
+   n8n Agent → Ollama API → Llama Model → Response → n8n
+
+3. External Integration Flow
+━━━━━━━━━━━━━━━━━━━━━━━━
+   n8n Agent → HTTP/MCP Node → External API → Update → Response
+
+4. Response Flow
+━━━━━━━━━━━━━
+   n8n Result → Webhook Response → OpenWebUI → Rendered Chat
+```
+
+### Component Responsibilities
+
+| Component | Port | Purpose | Technology |
+|-----------|------|---------|------------|
+| **Open WebUI** | 3000 | User interface & chat | Python/Svelte |
+| **n8n** | 5678 | Workflow orchestration | Node.js |
+| **Ollama** | 11434 | LLM inference engine | Go |
+| **PostgreSQL** | 5432 | n8n data persistence | SQL Database |
+| **Qdrant** | 6333 | Vector embeddings storage | Rust |
+| **Jira** | 8080 | Issue tracking (optional) | Java |
 
 ### Platform Architecture
 

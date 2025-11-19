@@ -1,0 +1,284 @@
+{
+  "name": "9 Bug Triage Assistant",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "bug_triage",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        860,
+        160
+      ],
+      "id": "bt-webhook-001",
+      "name": "Webhook - Bug Report",
+      "webhookId": "bug-triage-webhook"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://ollama:11434/api/generate",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "llama3.2:latest"
+            },
+            {
+              "name": "prompt",
+              "value": "=You are an expert software engineer and bug triage specialist with deep knowledge of debugging and issue classification.\n\nAnalyze this bug report and provide triage recommendations:\n\n**Bug Title:** {{ $('Webhook - Bug Report').item.json.body.title }}\n\n**Description:**\n{{ $('Webhook - Bug Report').item.json.body.description }}\n\n**Error Logs:**\n{{ $('Webhook - Bug Report').item.json.body.logs || 'No logs provided' }}\n\n**Steps to Reproduce:**\n{{ $('Webhook - Bug Report').item.json.body.stepsToReproduce || 'Not specified' }}\n\n**Environment:**\n{{ $('Webhook - Bug Report').item.json.body.environment || 'Not specified' }}\n\n**Instructions:**\nAnalyze and provide:\n1. **Root Cause Analysis:** Most likely cause based on description and logs\n2. **Priority:** Critical/High/Medium/Low with justification\n3. **Severity:** Blocker/Major/Minor/Trivial\n4. **Component:** Which part of the system is affected\n5. **Recommended Assignee:** Based on expertise area (Frontend/Backend/Database/DevOps/QA)\n6. **Suggested Fix:** High-level approach to resolve\n7. **Similar Issues:** Any patterns you recognize\n\n**Output Format:**\n```json\n{\n  \"triage_analysis\": {\n    \"root_cause\": {\n      \"primary_cause\": \"Brief description of the most likely root cause\",\n      \"contributing_factors\": [\"Factor 1\", \"Factor 2\"],\n      \"confidence\": \"High/Medium/Low\"\n    },\n    \"priority\": {\n      \"level\": \"Critical/High/Medium/Low\",\n      \"justification\": \"Why this priority was assigned\"\n    },\n    \"severity\": {\n      \"level\": \"Blocker/Major/Minor/Trivial\",\n      \"impact\": \"User impact description\"\n    },\n    \"classification\": {\n      \"component\": \"Frontend/Backend/Database/API/Infrastructure\",\n      \"category\": \"Bug/Performance/Security/UI-UX\",\n      \"tags\": [\"tag1\", \"tag2\"]\n    },\n    \"assignment\": {\n      \"recommended_team\": \"Team name\",\n      \"required_expertise\": [\"Skill 1\", \"Skill 2\"],\n      \"estimated_effort\": \"Hours/Days estimate\"\n    },\n    \"resolution\": {\n      \"suggested_fix\": \"High-level fix approach\",\n      \"investigation_steps\": [\"Step 1\", \"Step 2\"],\n      \"potential_risks\": [\"Risk 1\", \"Risk 2\"]\n    },\n    \"patterns\": {\n      \"similar_issues\": \"Description of similar past issues\",\n      \"frequency\": \"One-time/Recurring\",\n      \"trend\": \"Increasing/Stable/Decreasing\"\n    }\n  }\n}\n```\n\nProvide your analysis in valid JSON format only."
+            },
+            {
+              "name": "stream",
+              "value": false
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1180,
+        160
+      ],
+      "id": "bt-http-001",
+      "name": "Analyze Bug"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "bt-assign-001",
+              "name": "triage_result",
+              "value": "={{ $json.response }}",
+              "type": "string"
+            },
+            {
+              "id": "bt-assign-002",
+              "name": "bug_title",
+              "value": "={{ $('Webhook - Bug Report').item.json.body.title }}",
+              "type": "string"
+            },
+            {
+              "id": "bt-assign-003",
+              "name": "analyzed_at",
+              "value": "={{ $now.toISO() }}",
+              "type": "string"
+            },
+            {
+              "id": "bt-assign-004",
+              "name": "bug_id",
+              "value": "={{ $('Webhook - Bug Report').item.json.body.bugId || 'N/A' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1460,
+        160
+      ],
+      "id": "bt-set-001",
+      "name": "Structure Output"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $json }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.2,
+      "position": [
+        1720,
+        160
+      ],
+      "id": "bt-respond-001",
+      "name": "Return Triage Analysis"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "bt-condition-001",
+              "leftValue": "={{ $('Webhook - Bug Report').item.json.body.updateJira }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1460,
+        360
+      ],
+      "id": "bt-if-001",
+      "name": "Update Jira?"
+    },
+    {
+      "parameters": {
+        "content": "## \ud83d\udc46 Jira Update\nThis would update Jira with:\n- Priority\n- Assignee\n- Labels/Tags\n- Comments with analysis\n\nConnect Jira node here!",
+        "height": 340,
+        "width": 260,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1680,
+        540
+      ],
+      "typeVersion": 1,
+      "id": "bt-note-jira",
+      "name": "Sticky Note - Jira"
+    },
+    {
+      "parameters": {
+        "content": "## \ud83d\udc46 Webhook Input\nReceives bug report details.\n\nJSON format:\n```json\n{\n  \"title\": \"Login fails\",\n  \"description\": \"Users can't login\",\n  \"logs\": \"Error: null pointer\",\n  \"stepsToReproduce\": \"1. Go to login 2. Enter creds\",\n  \"environment\": \"Production\",\n  \"bugId\": \"BUG-123\",\n  \"updateJira\": false\n}\n```",
+        "height": 340,
+        "width": 200
+      },
+      "id": "bt-note-001",
+      "name": "Sticky Note - Input",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        820,
+        340
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## \ud83d\udc46 AI Analysis\nAnalyzes bug and suggests:\n- Root cause\n- Priority/Severity\n- Assignee\n- Fix approach",
+        "height": 340,
+        "width": 200
+      },
+      "id": "bt-note-002",
+      "name": "Sticky Note - Analyze",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1140,
+        340
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "# Bug Triage Assistant\n\n## Purpose\nAutomates bug analysis and triage process using AI.\n\n## How to Use\n\n### Simple Bug Report:\n```bash\ncurl -X POST http://localhost:5678/webhook/bug_triage \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"title\": \"Application crashes on startup\",\n    \"description\": \"App crashes immediately after launch\"\n  }'\n```\n\n### With Logs:\n```bash\ncurl -X POST http://localhost:5678/webhook/bug_triage \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"title\": \"Database connection timeout\",\n    \"description\": \"Users getting timeout errors\",\n    \"logs\": \"ERROR: Connection timeout after 30s\",\n    \"environment\": \"Production\"\n  }'\n```\n\n### Complete Report:\n```bash\ncurl -X POST http://localhost:5678/webhook/bug_triage \\\n  -H \"Content-Type: application/json\" \\\n  -d '{\n    \"title\": \"Payment processing fails\",\n    \"description\": \"Payment gateway returns 500 error\",\n    \"logs\": \"$(cat error.log)\",\n    \"stepsToReproduce\": \"1. Add item\\n2. Checkout\\n3. Payment fails\",\n    \"environment\": \"Production\",\n    \"bugId\": \"PROJ-456\"\n  }'\n```",
+        "height": 760,
+        "width": 500
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        140,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "bt-note-main",
+      "name": "Sticky Note - Documentation"
+    },
+    {
+      "parameters": {
+        "content": "## Training Workflow\n\n**What you learn:**\n\u2705 Bug triage automation\n\u2705 Root cause analysis\n\u2705 Priority classification\n\u2705 Team assignment logic\n\n**Try adding:**\n- Jira API integration\n- Slack notifications\n- Similar bug detection\n- Auto-assignment rules",
+        "height": 440,
+        "width": 460,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1980,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "bt-note-exercise",
+      "name": "Sticky Note - Learning"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook - Bug Report": {
+      "main": [
+        [
+          {
+            "node": "Analyze Bug",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze Bug": {
+      "main": [
+        [
+          {
+            "node": "Structure Output",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Update Jira?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structure Output": {
+      "main": [
+        [
+          {
+            "node": "Return Triage Analysis",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "training-bugtriage-v1",
+  "meta": {
+    "instanceId": "training-exercise-instance"
+  },
+  "id": "TrainingBugTriage001",
+  "tags": [
+    {
+      "id": "training",
+      "name": "training"
+    },
+    {
+      "id": "bug",
+      "name": "bug"
+    },
+    {
+      "id": "triage",
+      "name": "triage"
+    }
+  ]
+}
