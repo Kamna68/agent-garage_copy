@@ -1,0 +1,31 @@
+{
+  "name": "AgentGarage",
+  "forwardPorts": [5678, 3000, 11434, 6333, 8080],
+  "portsAttributes": {
+    "5678": {
+      "label": "n8n",
+      "onAutoForward": "notify",
+      "visibility": "public"
+    },
+    "3000": {
+      "label": "Open WebUI",
+      "onAutoForward": "notify",
+      "visibility": "public"
+    },
+    "11434": {
+      "label": "Ollama API",
+      "onAutoForward": "notify",
+      "visibility": "public"
+    },
+    "6333": {
+      "label": "Qdrant",
+      "onAutoForward": "silent",
+      "visibility": "private"
+    },
+    "8080": {
+      "label": "Jira",
+      "onAutoForward": "silent",
+      "visibility": "private"
+    }
+  }
+}

@@ -4,7 +4,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=You are the Manager in a software development project. Your responsibility is to interpret user requests and determine which specialized tools should be activated to fulfill them.\nAnalyze the user's input and break down the query into individual subtasks. Based on the subtasks, consider which tools you need to call up to process the tasks.\n\nAvailable tools:\n1. **Logfile-Agent**: Analyzes log files or error messages. It detects known vs. unknown error patterns and creates structured, Markdown-formatted bug reports. Always use this tool if the user input contains requests regarding bugs.\n2. **Jira-Agent**: Manages Jira tickets. It can create, update, assign, or retrieve Jira issues based on structured inputs or user instructions.\n3. **User-Story-Agent**: Is a helpful assistant that creates the content of user stories.\n4. **Bugreport-Agent**: Is a helpful assistant that creates structured bugreports.\n\n\nYou have access to:\n- The latest user message\n- Optionally, prior conversation history to improve intent understanding\n\nYour responsibilities:\n- Identify the user's **intent** (e.g., log analysis, ticket creation, status lookup, bugreport, lofilfe analysis)\n- Decide **which agent(s)** to activate\n- Determine the **execution order**, if multiple agents are needed\nAnalyze the following user request:\n{{ $json.body.chatInput }}\n-Return relevant partial results in the response for the user\n\n",
+        "text": "=You are the Manager in a software development project. Your responsibility is to interpret user requests and determine which specialized tools should be activated to fulfill them.\nAnalyze the user's input and break down the query into individual subtasks. Based on the subtasks, consider which tools you need to call up to process the tasks.\n\nAvailable tools:\n1. **Logfile-Agent**: Analyzes log files or error messages. It detects known vs. unknown error patterns and creates structured, Markdown-formatted bug reports. Always use this tool if the user input contains requests regarding bugs.\n2. **Jira-Agent**: Manages Jira tickets. It can create, update, assign, or retrieve Jira issues based on structured inputs or user instructions.\n3. **User-Story-Agent**: Is a helpful assistant that creates the content of user stories.\n4. **Bugreport-Agent**: Is a helpful assistant that creates structured bugreports.\n5. **Test-Data-Generator**: Generates realistic test data based on schema definitions. Use this tool when users request test data, sample records, mock data, or test datasets for databases, APIs, or testing purposes.\n\n\nYou have access to:\n- The latest user message\n- Optionally, prior conversation history to improve intent understanding\n\nYour responsibilities:\n- Identify the user's **intent** (e.g., log analysis, ticket creation, status lookup, bugreport, lofilfe analysis)\n- Decide **which agent(s)** to activate\n- Determine the **execution order**, if multiple agents are needed\nAnalyze the following user request:\n{{ $json.body.chatInput }}\n-Return relevant partial results in the response for the user\n\n",
         "options": {
           "returnIntermediateSteps": false
         }
@@ -329,6 +329,33 @@
       ],
       "id": "f16e4ebe-9530-4b42-bf3d-9390694a33f8",
       "name": "Jira-Agent"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to generate realistic test data based on schema definitions. Provide the database schema, field types, and desired record count. The tool generates varied, production-quality test data including edge cases. Use for database testing, API mocking, or demo data creation.",
+        "workflowId": {
+          "__rl": true,
+          "value": "test_data_agent_id",
+          "mode": "list",
+          "cachedResultName": "Test Data Generator (Agent)"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        980,
+        340
+      ],
+      "id": "test-data-generator-tool",
+      "name": "Test-Data-Generator"
     }
   ],
   "pinData": {},
@@ -411,6 +438,17 @@
       ]
     },
     "Jira-Agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "Manager-Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Test-Data-Generator": {
       "ai_tool": [
         [
           {
